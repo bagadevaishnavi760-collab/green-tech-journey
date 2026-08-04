@@ -46,6 +46,9 @@ function AboutPage() {
             <img
               src={photo}
               alt="Vaishnavi, IT student and sustainability learner"
+              width={528}
+              height={646}
+              loading="eager"
               className="w-full rounded-[2rem] border border-border/70 object-cover shadow-soft"
             />
             <div className="space-y-4 text-muted-foreground">
