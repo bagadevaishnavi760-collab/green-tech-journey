@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, Section, Card } from "@/components/SiteLayout";
-import photo from "@/assets/vaishnavi.png";
+import photo from "@/assets/vaishnavi-photo.webp";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -46,6 +46,9 @@ function AboutPage() {
             <img
               src={photo}
               alt="Vaishnavi, IT student and sustainability learner"
+              width={528}
+              height={646}
+              loading="eager"
               className="w-full rounded-[2rem] border border-border/70 object-cover shadow-soft"
             />
             <div className="space-y-4 text-muted-foreground">
