@@ -1,0 +1,220 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useRef, useState } from "react";
+import { FileText, FileImage, FileType2, Trash2, UploadCloud } from "lucide-react";
+import { SiteLayout, Section, Card } from "@/components/SiteLayout";
+
+export const Route = createFileRoute("/assignments")({
+  head: () => ({
+    meta: [
+      { title: "Assignments · Upload PDFs, Docs & Images" },
+      {
+        name: "description",
+        content:
+          "Coursework for E-Waste & Environmental Management, plus a space to upload assignments as PDF, Word documents or images.",
+      },
+      { property: "og:title", content: "Assignments · E-Waste Portfolio" },
+      {
+        property: "og:description",
+        content: "Upload and review assignment files as PDF, Word docs or images.",
+      },
+    ],
+  }),
+  component: AssignmentsPage,
+});
+
+const COURSEWORK = [
+  ["Assignment 1 🌱", "What is e-waste? Definitions, sources and everyday examples."],
+  ["Assignment 2 ♻️", "Impact of improper disposal on soil, water and air."],
+  ["Assignment 3 🔬", "Recycling methods and recovery of precious metals."],
+  ["Assignment 4 📚", "India's E-Waste Management Rules and EPR responsibilities."],
+  ["Assignment 5 💡", "Proposal: Smart E-Waste Collection Boxes for campuses."],
+];
+
+const ACCEPT =
+  ".pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.gif,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*";
+
+type Upload = {
+  id: string;
+  name: string;
+  size: number;
+  kind: "pdf" | "doc" | "image" | "other";
+  url?: string;
+};
+
+function kindOf(file: File): Upload["kind"] {
+  if (file.type.startsWith("image/")) return "image";
+  if (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"))
+    return "pdf";
+  if (/\.(docx?|odt)$/i.test(file.name) || file.type.includes("word")) return "doc";
+  return "other";
+}
+
+function prettySize(bytes: number) {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+}
+
+function AssignmentsPage() {
+  const [uploads, setUploads] = useState<Upload[]>([]);
+  const [dragging, setDragging] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function addFiles(files: FileList | null) {
+    if (!files || files.length === 0) return;
+    const next: Upload[] = [];
+    let rejected = 0;
+    for (const file of Array.from(files)) {
+      const kind = kindOf(file);
+      if (kind === "other") {
+        rejected += 1;
+        continue;
+      }
+      next.push({
+        id: `${file.name}-${file.size}-${Date.now()}-${Math.random()}`,
+        name: file.name,
+        size: file.size,
+        kind,
+        url: URL.createObjectURL(file),
+      });
+    }
+    setError(
+      rejected > 0
+        ? "Some files were skipped — only PDF, Word documents and images are accepted."
+        : null,
+    );
+    if (next.length) setUploads((prev) => [...next, ...prev]);
+  }
+
+  function remove(id: string) {
+    setUploads((prev) => {
+      const target = prev.find((u) => u.id === id);
+      if (target?.url) URL.revokeObjectURL(target.url);
+      return prev.filter((u) => u.id !== id);
+    });
+  }
+
+  return (
+    <SiteLayout>
+      <div className="hero-bg">
+        <Section eyebrow="📄 Assignments" title="Coursework & submissions">
+          <div className="space-y-4">
+            {COURSEWORK.map(([t, d]) => (
+              <Card key={t} className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-8">
+                <p className="min-w-48 font-display font-bold text-primary">{t}</p>
+                <p className="text-sm text-muted-foreground">{d}</p>
+              </Card>
+            ))}
+          </div>
+        </Section>
+      </div>
+
+      <Section eyebrow="⬆️ Upload" title="Add your assignment files">
+        <p className="-mt-4 mb-6 text-sm text-muted-foreground">
+          Accepted formats: PDF, Word documents (.doc, .docx) and images (PNG,
+          JPG, WEBP, GIF). Files stay on this device in your current session.
+        </p>
+
+        <div
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragging(true);
+          }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={(e) => {
+            e.preventDefault();
+            setDragging(false);
+            addFiles(e.dataTransfer.files);
+          }}
+          className={`rounded-3xl border-2 border-dashed p-10 text-center transition-colors ${
+            dragging ? "border-primary bg-secondary/60" : "border-border bg-card"
+          }`}
+        >
+          <UploadCloud className="mx-auto size-10 text-primary" />
+          <p className="mt-4 font-display text-lg font-semibold">
+            Drag &amp; drop files here
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            or choose them from your device
+          </p>
+          <button
+            onClick={() => inputRef.current?.click()}
+            className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            <UploadCloud className="size-4" /> Choose files
+          </button>
+          <input
+            ref={inputRef}
+            type="file"
+            multiple
+            accept={ACCEPT}
+            className="hidden"
+            onChange={(e) => {
+              addFiles(e.target.files);
+              e.target.value = "";
+            }}
+          />
+        </div>
+
+        {error && (
+          <p className="mt-4 text-sm font-medium text-destructive">{error}</p>
+        )}
+
+        {uploads.length > 0 && (
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {uploads.map((u) => (
+              <Card key={u.id} className="flex flex-col gap-3">
+                {u.kind === "image" ? (
+                  <img
+                    src={u.url}
+                    alt={u.name}
+                    className="h-40 w-full rounded-2xl border border-border/70 object-cover"
+                  />
+                ) : (
+                  <div className="grid h-40 w-full place-items-center rounded-2xl bg-secondary/60">
+                    {u.kind === "pdf" ? (
+                      <FileText className="size-10 text-primary" />
+                    ) : (
+                      <FileType2 className="size-10 text-primary" />
+                    )}
+                  </div>
+                )}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium">{u.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {u.kind.toUpperCase()} · {prettySize(u.size)}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => remove(u.id)}
+                    aria-label={`Remove ${u.name}`}
+                    className="rounded-xl border border-border p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                  >
+                    <Trash2 className="size-4" />
+                  </button>
+                </div>
+                <a
+                  href={u.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-xs font-semibold text-primary hover:underline"
+                >
+                  Open preview →
+                </a>
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {uploads.length === 0 && (
+          <Card className="mt-8 flex items-center gap-3 bg-secondary/50 text-sm text-muted-foreground">
+            <FileImage className="size-5 text-primary" />
+            No files added yet — your uploaded assignments will appear here.
+          </Card>
+        )}
+      </Section>
+    </SiteLayout>
+  );
+}
