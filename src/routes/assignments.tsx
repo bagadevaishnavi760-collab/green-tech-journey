@@ -1,7 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import { FileText, FileImage, FileType2, Trash2, UploadCloud } from "lucide-react";
+import { ArrowUpRight, Download, FileText, FileImage, FileType2, Trash2, UploadCloud } from "lucide-react";
 import { SiteLayout, Section, Card } from "@/components/SiteLayout";
+
+const ASSIGNMENT_FILES = [
+  {
+    title: "Crossword",
+    file: "Crossword.pdf",
+    path: "/assignments/Crossword.pdf",
+  },
+  {
+    title: "Sustainability Pledge",
+    file: "Sustainability Pledge.pdf",
+    path: "/assignments/Sustainability%20Pledge.pdf",
+  },
+];
 
 export const Route = createFileRoute("/assignments")({
   head: () => ({
@@ -194,6 +207,53 @@ function AssignmentsPage() {
             No files added yet — your uploaded assignments will appear here.
           </Card>
         )}
+
+        <div className="mt-10">
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                Available assignments
+              </p>
+              <h3 className="mt-3 text-2xl font-bold sm:text-3xl">
+                Preview or download your assignment PDFs
+              </h3>
+            </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            {ASSIGNMENT_FILES.map((assignment) => (
+              <Card key={assignment.file} className="flex h-full flex-col justify-between gap-6">
+                <div>
+                  <div className="grid h-32 w-full place-items-center rounded-3xl bg-secondary/60">
+                    <FileText className="size-10 text-primary" />
+                  </div>
+                  <p className="mt-5 text-lg font-semibold">{assignment.title}</p>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    PDF document ready to view and download.
+                  </p>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <a
+                    href={assignment.path}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold text-primary transition hover:border-primary hover:text-primary-foreground"
+                  >
+                    <ArrowUpRight className="size-4" /> View PDF
+                  </a>
+                  <a
+                    href={assignment.path}
+                    download={assignment.file}
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+                  >
+                    <Download className="size-4" /> Download
+                  </a>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
       </Section>
       </div>
     </SiteLayout>
