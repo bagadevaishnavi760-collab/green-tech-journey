@@ -195,6 +195,7 @@ function AssignmentsPage() {
           </Card>
         )}
       </Section>
+      </div>
     </SiteLayout>
   );
 }
