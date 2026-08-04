@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Leaf, Recycle, Sparkles, ArrowDown } from "lucide-react";
 import { SiteLayout, Section, Card } from "@/components/SiteLayout";
-import photo from "@/assets/vaishnavi.png.asset.json";
+import photo from "@/assets/vaishnavi.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -86,7 +86,7 @@ function HomePage() {
           <div className="relative mx-auto w-full max-w-sm">
             <div className="absolute -inset-4 rounded-[2.5rem] bg-primary/10 blur-2xl" />
             <img
-              src={photo.url}
+              src={photo}
               alt="Vaishnavi sitting on grass, smiling"
               className="relative w-full rounded-[2rem] border border-border/70 object-cover shadow-soft"
             />

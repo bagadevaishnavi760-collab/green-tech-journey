@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, Section, Card } from "@/components/SiteLayout";
-import photo from "@/assets/vaishnavi.png.asset.json";
+import photo from "@/assets/vaishnavi.png";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -44,7 +44,7 @@ function AboutPage() {
         <Section eyebrow="🌱 About Me" title="Hi, I'm Vaishnavi 💚">
           <div className="grid items-start gap-8 lg:grid-cols-[.8fr_1.2fr]">
             <img
-              src={photo.url}
+              src={photo}
               alt="Vaishnavi, IT student and sustainability learner"
               className="w-full rounded-[2rem] border border-border/70 object-cover shadow-soft"
             />
