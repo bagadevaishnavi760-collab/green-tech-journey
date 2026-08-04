@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Leaf, Recycle, Sparkles, ArrowDown } from "lucide-react";
 import { SiteLayout, Section, Card } from "@/components/SiteLayout";
-import photo from "@/assets/vaishnavi-photo.webp";
+import photo from "@/assets/vaishnavi.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
