@@ -6,29 +6,21 @@ import { SiteLayout, Section, Card } from "@/components/SiteLayout";
 export const Route = createFileRoute("/assignments")({
   head: () => ({
     meta: [
-      { title: "Assignments · Upload PDFs, Docs & Images" },
+      { title: "Upload Assignments · PDFs, Docs & Images" },
       {
         name: "description",
         content:
-          "Coursework for E-Waste & Environmental Management, plus a space to upload assignments as PDF, Word documents or images.",
+          "Upload your assignments as PDF, Word documents or images.",
       },
-      { property: "og:title", content: "Assignments · E-Waste Portfolio" },
+      { property: "og:title", content: "Upload Assignments · E-Waste Portfolio" },
       {
         property: "og:description",
-        content: "Upload and review assignment files as PDF, Word docs or images.",
+        content: "Upload your assignments as PDF, Word documents or images.",
       },
     ],
   }),
   component: AssignmentsPage,
 });
-
-const COURSEWORK = [
-  ["Assignment 1 🌱", "What is e-waste? Definitions, sources and everyday examples."],
-  ["Assignment 2 ♻️", "Impact of improper disposal on soil, water and air."],
-  ["Assignment 3 🔬", "Recycling methods and recovery of precious metals."],
-  ["Assignment 4 📚", "India's E-Waste Management Rules and EPR responsibilities."],
-  ["Assignment 5 💡", "Proposal: Smart E-Waste Collection Boxes for campuses."],
-];
 
 const ACCEPT =
   ".pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.gif,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*";
@@ -98,19 +90,7 @@ function AssignmentsPage() {
   return (
     <SiteLayout>
       <div className="hero-bg">
-        <Section eyebrow="📄 Assignments" title="Coursework & submissions">
-          <div className="space-y-4">
-            {COURSEWORK.map(([t, d]) => (
-              <Card key={t} className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-8">
-                <p className="min-w-48 font-display font-bold text-primary">{t}</p>
-                <p className="text-sm text-muted-foreground">{d}</p>
-              </Card>
-            ))}
-          </div>
-        </Section>
-      </div>
-
-      <Section eyebrow="⬆️ Upload" title="Add your assignment files">
+        <Section eyebrow="⬆️ Upload" title="Add your assignment files">
         <p className="-mt-4 mb-6 text-sm text-muted-foreground">
           Accepted formats: PDF, Word documents (.doc, .docx) and images (PNG,
           JPG, WEBP, GIF). Files stay on this device in your current session.
@@ -215,6 +195,7 @@ function AssignmentsPage() {
           </Card>
         )}
       </Section>
+      </div>
     </SiteLayout>
   );
 }
