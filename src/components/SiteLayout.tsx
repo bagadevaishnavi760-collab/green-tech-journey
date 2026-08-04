@@ -8,7 +8,6 @@ import {
   User,
   BookOpen,
   FileText,
-  Image as ImageIcon,
   Mail,
 } from "lucide-react";
 
