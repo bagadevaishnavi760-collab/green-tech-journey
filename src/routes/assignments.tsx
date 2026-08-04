@@ -6,29 +6,21 @@ import { SiteLayout, Section, Card } from "@/components/SiteLayout";
 export const Route = createFileRoute("/assignments")({
   head: () => ({
     meta: [
-      { title: "Assignments · Upload PDFs, Docs & Images" },
+      { title: "Upload Assignments · PDFs, Docs & Images" },
       {
         name: "description",
         content:
-          "Coursework for E-Waste & Environmental Management, plus a space to upload assignments as PDF, Word documents or images.",
+          "Upload your assignments as PDF, Word documents or images.",
       },
-      { property: "og:title", content: "Assignments · E-Waste Portfolio" },
+      { property: "og:title", content: "Upload Assignments · E-Waste Portfolio" },
       {
         property: "og:description",
-        content: "Upload and review assignment files as PDF, Word docs or images.",
+        content: "Upload your assignments as PDF, Word documents or images.",
       },
     ],
   }),
   component: AssignmentsPage,
 });
-
-const COURSEWORK = [
-  ["Assignment 1 🌱", "What is e-waste? Definitions, sources and everyday examples."],
-  ["Assignment 2 ♻️", "Impact of improper disposal on soil, water and air."],
-  ["Assignment 3 🔬", "Recycling methods and recovery of precious metals."],
-  ["Assignment 4 📚", "India's E-Waste Management Rules and EPR responsibilities."],
-  ["Assignment 5 💡", "Proposal: Smart E-Waste Collection Boxes for campuses."],
-];
 
 const ACCEPT =
   ".pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.gif,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*";
