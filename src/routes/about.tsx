@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, Section, Card } from "@/components/SiteLayout";
-import photo from "@/assets/vaishnavi.png.asset.json";
+import photo from "@/assets/vaishnavi.png";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
