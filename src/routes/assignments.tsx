@@ -90,19 +90,7 @@ function AssignmentsPage() {
   return (
     <SiteLayout>
       <div className="hero-bg">
-        <Section eyebrow="📄 Assignments" title="Coursework & submissions">
-          <div className="space-y-4">
-            {COURSEWORK.map(([t, d]) => (
-              <Card key={t} className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-8">
-                <p className="min-w-48 font-display font-bold text-primary">{t}</p>
-                <p className="text-sm text-muted-foreground">{d}</p>
-              </Card>
-            ))}
-          </div>
-        </Section>
-      </div>
-
-      <Section eyebrow="⬆️ Upload" title="Add your assignment files">
+        <Section eyebrow="⬆️ Upload" title="Add your assignment files">
         <p className="-mt-4 mb-6 text-sm text-muted-foreground">
           Accepted formats: PDF, Word documents (.doc, .docx) and images (PNG,
           JPG, WEBP, GIF). Files stay on this device in your current session.
