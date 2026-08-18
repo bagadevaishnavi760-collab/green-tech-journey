@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { ArrowUpRight, Download, FileText, FileImage, FileType2, Trash2, UploadCloud } from "lucide-react";
 import { SiteLayout, Section, Card } from "@/components/SiteLayout";
-import cFootprintAsset from "@/assets/C-footprint_calculator.pdf.asset.json";
+
 
 const ASSIGNMENT_FILES = [
   {
@@ -18,7 +18,7 @@ const ASSIGNMENT_FILES = [
   {
     title: "C Footprint Calculator",
     file: "C-footprint_calculator.pdf",
-    path: cFootprintAsset.url,
+    path: "/assignments/C-footprint_calculator.pdf",
   },
 ];
 
