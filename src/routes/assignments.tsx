@@ -18,7 +18,7 @@ const ASSIGNMENT_FILES = [
   {
     title: "C Footprint Calculator",
     file: "C-footprint_calculator.pdf",
-    path: cFootprintAsset.url,
+    path: "/assignments/C-footprint_calculator.pdf",
   },
 ];
 
