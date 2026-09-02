@@ -20,6 +20,11 @@ const ASSIGNMENT_FILES = [
     file: "C-footprint_calculator.pdf",
     path: "/assignments/C-footprint_calculator.pdf",
   },
+  {
+    title: "Device anatomy",
+    file: "Device anatomy.pdf",
+    path: "/assignments/Device%20anatomy.pdf",
+  },
 ];
 
 export const Route = createFileRoute("/assignments")({
