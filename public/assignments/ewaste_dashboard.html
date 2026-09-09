@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Global E-Waste Dashboard — India in Context</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F1613; --panel:#161F1A; --panel2:#1B2621; --border:#2A3833;
+    --text:#E9EFEA; --text2:#9FB2A9; --text3:#6C7D74;
+    --copper:#D98B5D; --copper-dim:#8A5A3C;
+    --sage:#7FAE8C; --sage-dim:#3E5449;
+    --gold:#EAA945; --gold-soft:#3A2E17;
+    --rust:#C15B45; --rust-soft:#3A2119;
+    --base-bar:#3E5C52; --grid:#243029;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;}
+  .wrap{max-width:1180px;margin:0 auto;padding:36px 28px 56px;}
+  .masthead{border-bottom:1px solid var(--border);padding-bottom:22px;margin-bottom:26px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:28px;margin:0 0 6px;letter-spacing:.2px;}
+  .sub{color:var(--text2);font-size:13.5px;margin:0;max-width:560px;line-height:1.5;}
+  .meta{color:var(--text3);font-size:12px;text-align:right;line-height:1.6;}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+  .kpi{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px 18px;}
+  .kpi .label{font-size:11.5px;color:var(--text2);margin-bottom:10px;letter-spacing:.2px;}
+  .kpi .value{font-family:'Fraunces',serif;font-size:30px;font-weight:600;color:var(--gold);line-height:1;}
+  .kpi .value small{font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:500;color:var(--text2);margin-left:4px;}
+  .kpi .foot{font-size:11.5px;color:var(--text3);margin-top:8px;}
+
+  .filter-row{display:flex;align-items:center;gap:8px;margin-bottom:22px;flex-wrap:wrap;}
+  .filter-row span.lbl{font-size:12px;color:var(--text3);margin-right:4px;}
+  .chip{border:1px solid var(--border);background:transparent;color:var(--text2);font-size:12.5px;padding:6px 13px;border-radius:100px;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;transition:all .15s;}
+  .chip:hover{border-color:var(--sage);color:var(--text);}
+  .chip.active{background:var(--sage-dim);border-color:var(--sage);color:var(--text);}
+
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px 20px 12px;margin-bottom:18px;}
+  .panel h2{font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;font-weight:600;margin:0 0 2px;color:var(--text);}
+  .panel .desc{font-size:12px;color:var(--text3);margin:0 0 14px;}
+  .row2{display:grid;grid-template-columns:1.35fr 1fr;gap:18px;}
+  .legend{display:flex;gap:16px;font-size:11.5px;color:var(--text2);margin-bottom:10px;flex-wrap:wrap;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .sw{width:10px;height:10px;border-radius:2px;display:inline-block;}
+
+  .fw-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .fw-col h3{font-size:12px;font-weight:500;margin:0 0 10px;display:flex;align-items:center;gap:8px;}
+  .fw-list{display:flex;flex-wrap:wrap;gap:6px;}
+  .pill{font-size:11.5px;padding:5px 10px;border-radius:100px;border:1px solid var(--border);color:var(--text2);transition:opacity .15s;}
+  .pill.full{background:var(--sage-dim);border-color:var(--sage);color:#DCEEE1;}
+  .pill.partial{background:var(--rust-soft);border-color:var(--rust);color:#F3D8D0;}
+  .pill.india{outline:1.5px solid var(--gold);}
+
+  .insights{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4px;}
+  .insight{border-left:2px solid var(--copper);padding:2px 0 2px 12px;font-size:12.5px;color:var(--text2);line-height:1.5;}
+  .insight b{color:var(--text);font-weight:500;}
+
+  .footer-note{font-size:11px;color:var(--text3);margin-top:18px;border-top:1px solid var(--border);padding-top:14px;}
+
+  @media (max-width:820px){
+    .kpi-row{grid-template-columns:repeat(2,1fr);}
+    .row2{grid-template-columns:1fr;}
+    .insights{grid-template-columns:1fr;}
+    .fw-cols{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div>
+      <h1>Global e-waste generation — India in context</h1>
+      <p class="sub">20-country snapshot, 2022. Where India stands on total volume, per-capita generation, and policy readiness — and what the data implies for what comes next.</p>
+    </div>
+    <div class="meta">Source: global_ewaste_india_analysis.csv<br>20 countries · single year (2022)</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="label">India — total e-waste generated</div>
+      <div class="value">4,100<small>M kg</small></div>
+      <div class="foot">Rank #3 of 20 · 9.2% of the 20-country total</div>
+    </div>
+    <div class="kpi">
+      <div class="label">India — per-capita generation</div>
+      <div class="value">2.9<small>kg/person</small></div>
+      <div class="foot">Rank #19 of 20 · global avg here is 14.2 kg</div>
+    </div>
+    <div class="kpi">
+      <div class="label">India vs. population-predicted level</div>
+      <div class="value">&minus;4,322<small>M kg</small></div>
+      <div class="foot">Largest shortfall of any country in the set</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Full EPR + targets in place</div>
+      <div class="value">14<small>of 20 countries</small></div>
+      <div class="foot">India has all three; 6 large emerging economies don't</div>
+    </div>
+  </div>
+
+  <div class="filter-row">
+    <span class="lbl">Filter by region</span>
+    <button class="chip active" data-region="All">All</button>
+    <button class="chip" data-region="Asia">Asia</button>
+    <button class="chip" data-region="Americas">Americas</button>
+    <button class="chip" data-region="Europe">Europe</button>
+    <button class="chip" data-region="Africa">Africa</button>
+    <button class="chip" data-region="Oceania">Oceania</button>
+  </div>
+
+  <div class="panel">
+    <h2>Total e-waste generated by country</h2>
+    <p class="desc">Million kg, 2022. India is 3rd overall — driven by population, not consumption per person.</p>
+    <div class="legend"><span><i class="sw" style="background:var(--gold)"></i>India</span><span><i class="sw" style="background:var(--base-bar)"></i>Other countries</span></div>
+    <div style="position:relative;height:880px;"><canvas id="totalChart" role="img" aria-label="Horizontal bar chart of total e-waste generated by 20 countries in 2022, India highlighted, ranking 3rd behind China and the United States"></canvas></div>
+  </div>
+
+  <div class="panel">
+    <h2>Per-capita e-waste generated by country</h2>
+    <p class="desc">Kg per person, 2022, with the 20-country average marked. India sits near the bottom despite its total-volume rank.</p>
+    <div class="legend"><span><i class="sw" style="background:var(--gold)"></i>India</span><span><i class="sw" style="background:var(--base-bar)"></i>Other countries</span><span><i class="sw" style="background:var(--copper);width:14px;height:2px;border-radius:0;"></i>Average (14.2 kg)</span></div>
+    <div style="position:relative;height:880px;"><canvas id="pcChart" role="img" aria-label="Horizontal bar chart of per-capita e-waste by country, India highlighted near the bottom at 2.9 kilograms per person, well below the 14.2 kilogram average"></canvas></div>
+  </div>
+
+  <div class="row2">
+    <div class="panel">
+      <h2>Population vs. total e-waste generated</h2>
+      <p class="desc">Dashed line = what population alone predicts. Points below it generate less than their size implies.</p>
+      <div style="position:relative;height:340px;"><canvas id="scatterChart" role="img" aria-label="Scatter plot of population against total e-waste generated, with a population-based trend line. India sits far below the trend line, generating about 4,300 million kilograms less than its population alone would predict."></canvas></div>
+    </div>
+    <div class="panel">
+      <h2>Share of total by region</h2>
+      <p class="desc">Asia leads on volume, driven by China, India and Japan.</p>
+      <div style="position:relative;height:340px;"><canvas id="regionChart" role="img" aria-label="Donut chart of the share of total e-waste generated by region: Asia 47 percent, Americas 26 percent, Europe 22 percent, Africa 3 percent, Oceania 1 percent"></canvas></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Policy framework: legislation with actual enforcement targets</h2>
+    <p class="desc">Every country here has some e-waste legislation. This splits them by whether that legislation is backed by a collection target and a recycling target.</p>
+    <div class="fw-cols">
+      <div class="fw-col">
+        <h3><i class="sw" style="background:var(--sage)"></i>Full framework — legislation + EPR + collection target + recycling target (14)</h3>
+        <div class="fw-list" id="fullList"></div>
+      </div>
+      <div class="fw-col">
+        <h3><i class="sw" style="background:var(--rust)"></i>Partial framework — legislation only, no collection/recycling target (6)</h3>
+        <div class="fw-list" id="partialList"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Key takeaways</h2>
+    <div class="insights">
+      <div class="insight"><b>Size drives the total, not affluence.</b> Population correlates with total e-waste at r≈0.76, but per-capita generation correlates with population at r≈&minus;0.45 — bigger countries generate more overall, but less per person.</div>
+      <div class="insight"><b>Room to grow.</b> India's actual output is ~4,300M kg below its population-predicted level — the largest gap of any country — pointing to sharp volume growth as incomes and device ownership rise.</div>
+      <div class="insight"><b>Framework ahead of peers.</b> Brazil, Indonesia, Mexico, Egypt, Nigeria and South Africa all have legislation but lack collection/recycling targets. India already has both.</div>
+    </div>
+  </div>
+
+  <p class="footer-note">Limitations: single-year snapshot (2022), 20 countries only. Recycling volumes, recycling rates, and GDP were 100% missing in the source file and are not shown here.</p>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const DATA = [
+  {country:"India", region:"Asia", total:4100, pc:2.9, pop:1417.0, epr:1, coll:1, rec:1},
+  {country:"China", region:"Asia", total:12000, pc:8.5, pop:1412.0, epr:1, coll:1, rec:1},
+  {country:"United States", region:"Americas", total:7700, pc:23.9, pop:333.3, epr:1, coll:1, rec:1},
+  {country:"Japan", region:"Asia", total:2600, pc:20.6, pop:125.1, epr:1, coll:1, rec:1},
+  {country:"Germany", region:"Europe", total:1700, pc:20.3, pop:84.1, epr:1, coll:1, rec:1},
+  {country:"United Kingdom", region:"Europe", total:1600, pc:24.5, pop:67.3, epr:1, coll:1, rec:1},
+  {country:"Brazil", region:"Americas", total:2100, pc:9.8, pop:214.3, epr:1, coll:0, rec:0},
+  {country:"Indonesia", region:"Asia", total:1600, pc:5.9, pop:275.5, epr:1, coll:0, rec:0},
+  {country:"France", region:"Europe", total:1400, pc:21.0, pop:66.0, epr:1, coll:1, rec:1},
+  {country:"Italy", region:"Europe", total:1200, pc:20.1, pop:59.0, epr:1, coll:1, rec:1},
+  {country:"Canada", region:"Americas", total:770, pc:20.2, pop:38.2, epr:1, coll:1, rec:1},
+  {country:"Australia", region:"Oceania", total:580, pc:22.0, pop:26.3, epr:1, coll:1, rec:1},
+  {country:"Mexico", region:"Americas", total:1200, pc:9.2, pop:127.5, epr:1, coll:0, rec:0},
+  {country:"Russia", region:"Europe", total:1630, pc:11.2, pop:145.6, epr:1, coll:1, rec:1},
+  {country:"South Korea", region:"Asia", total:800, pc:15.5, pop:51.7, epr:1, coll:1, rec:1},
+  {country:"Spain", region:"Europe", total:900, pc:19.0, pop:47.4, epr:1, coll:1, rec:1},
+  {country:"South Africa", region:"Africa", total:480, pc:7.9, pop:60.4, epr:1, coll:0, rec:0},
+  {country:"Nigeria", region:"Africa", total:500, pc:2.3, pop:218.5, epr:0, coll:0, rec:0},
+  {country:"Egypt", region:"Africa", total:510, pc:4.8, pop:106.2, epr:1, coll:0, rec:0},
+  {country:"Turkey", region:"Europe", total:1200, pc:14.0, pop:85.3, epr:1, coll:1, rec:1},
+];
+const GOLD="#EAA945", BASE="#3E5C52", DIM="rgba(62,92,82,0.28)", GOLDDIM="rgba(234,169,69,0.35)", COPPER="#D98B5D";
+const AVG_PC = (DATA.reduce((s,d)=>s+d.pc,0)/DATA.length);
+let activeRegion = "All";
+
+function fullFramework(d){ return d.epr && d.coll && d.rec; }
+
+// ---- Total bar chart ----
+const byTotal = [...DATA].sort((a,b)=>b.total-a.total);
+const totalCtx = document.getElementById('totalChart');
+const totalColors = byTotal.map(d => d.country==="India" ? GOLD : BASE);
+const totalChart = new Chart(totalCtx, {
+  type: 'bar',
+  data: { labels: byTotal.map(d=>d.country),
+    datasets: [{ data: byTotal.map(d=>d.total), backgroundColor: totalColors, borderRadius: 3, barThickness: 16 }]},
+  options: { indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => c.parsed.x.toLocaleString()+' million kg' } } },
+    scales:{ x:{ grid:{color:'#243029'}, ticks:{color:'#9FB2A9', callback:v=>v.toLocaleString()} },
+             y:{ grid:{display:false}, ticks:{color:'#9FB2A9', font:{size:11.5}} } } }
+});
+
+// ---- Per-capita bar chart ----
+const byPC = [...DATA].sort((a,b)=>b.pc-a.pc);
+const pcColors = byPC.map(d => d.country==="India" ? GOLD : BASE);
+const pcChart = new Chart(document.getElementById('pcChart'), {
+  type: 'bar',
+  data: { labels: byPC.map(d=>d.country),
+    datasets: [{ data: byPC.map(d=>d.pc), backgroundColor: pcColors, borderRadius: 3, barThickness: 16 }]},
+  options: { indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => c.parsed.x+' kg/person' } },
+      annotation:undefined },
+    scales:{ x:{ grid:{color:'#243029'}, ticks:{color:'#9FB2A9'} },
+             y:{ grid:{display:false}, ticks:{color:'#9FB2A9', font:{size:11.5}} } } }
+});
+// average line via afterDraw plugin (no annotation plugin dependency)
+const avgLinePlugin = {
+  id:'avgLine',
+  afterDraw(chart){
+    if(chart.canvas.id!=='pcChart') return;
+    const {ctx, chartArea, scales} = chart;
+    const x = scales.x.getPixelForValue(AVG_PC);
+    ctx.save();
+    ctx.strokeStyle = COPPER; ctx.lineWidth = 1.5; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(x, chartArea.top); ctx.lineTo(x, chartArea.bottom); ctx.stroke();
+    ctx.restore();
+  }
+};
+Chart.register(avgLinePlugin);
+pcChart.update();
+
+// ---- Scatter: population vs total ----
+const slope = 5.298226810653393, intercept = 914.3543130195844;
+const minPop = Math.min(...DATA.map(d=>d.pop)), maxPop = Math.max(...DATA.map(d=>d.pop));
+const india = DATA.find(d=>d.country==="India");
+const others = DATA.filter(d=>d.country!=="India");
+const scatterChart = new Chart(document.getElementById('scatterChart'), {
+  data: {
+    datasets: [
+      { type:'line', label:'Population-based trend', data:[{x:minPop,y:slope*minPop+intercept},{x:maxPop,y:slope*maxPop+intercept}],
+        borderColor:COPPER, borderDash:[5,4], borderWidth:1.5, pointRadius:0, fill:false, order:3 },
+      { type:'scatter', label:'Other countries', data: others.map(d=>({x:d.pop,y:d.total,region:d.region})),
+        backgroundColor: BASE, pointRadius:5, order:2 },
+      { type:'scatter', label:'India', data:[{x:india.pop,y:india.total,region:india.region}],
+        backgroundColor: GOLD, pointRadius:8, borderColor:'#0F1613', borderWidth:1.5, order:1 },
+    ]
+  },
+  options: { responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ position:'bottom', labels:{color:'#9FB2A9', boxWidth:10, font:{size:11}} },
+      tooltip:{ callbacks:{ label: c => (c.raw.region||'')+': pop '+c.raw.x+'M, e-waste '+ (c.raw.y!==undefined? c.raw.y.toLocaleString():'') +'M kg' } } },
+    scales:{ x:{ title:{display:true,text:'Population (millions)',color:'#9FB2A9'}, grid:{color:'#243029'}, ticks:{color:'#9FB2A9'} },
+             y:{ title:{display:true,text:'Total e-waste (million kg)',color:'#9FB2A9'}, grid:{color:'#243029'}, ticks:{color:'#9FB2A9'} } } }
+});
+
+// ---- Region donut ----
+const regionAgg = {};
+DATA.forEach(d=>{ regionAgg[d.region] = (regionAgg[d.region]||0) + d.total; });
+const regionLabels = Object.keys(regionAgg);
+const regionColors = ["#D98B5D","#7FAE8C","#8FA6C2","#C48A4F","#6C7D74"];
+const regionChart = new Chart(document.getElementById('regionChart'), {
+  type:'doughnut',
+  data:{ labels: regionLabels, datasets:[{ data: regionLabels.map(r=>regionAgg[r]), backgroundColor: regionColors, borderColor:'#161F1A', borderWidth:2 }] },
+  options:{ responsive:true, maintainAspectRatio:false, cutout:'62%',
+    plugins:{ legend:{ position:'bottom', labels:{color:'#9FB2A9', boxWidth:10, font:{size:11}} },
+      tooltip:{ callbacks:{ label: c => c.label+': '+c.parsed.toLocaleString()+' million kg' } } } }
+});
+
+// ---- Policy framework pills ----
+function renderPills(){
+  const fullEl = document.getElementById('fullList');
+  const partialEl = document.getElementById('partialList');
+  fullEl.innerHTML=''; partialEl.innerHTML='';
+  DATA.forEach(d=>{
+    const pill = document.createElement('span');
+    pill.className = 'pill ' + (fullFramework(d)?'full':'partial') + (d.country==='India'?' india':'');
+    pill.textContent = d.country;
+    pill.style.opacity = (activeRegion==='All' || d.region===activeRegion) ? '1' : '0.25';
+    (fullFramework(d)?fullEl:partialEl).appendChild(pill);
+  });
+}
+renderPills();
+
+// ---- Region filter interactivity ----
+document.querySelectorAll('.chip').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.chip').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeRegion = btn.dataset.region;
+
+    totalChart.data.datasets[0].backgroundColor = byTotal.map(d=>{
+      if(d.country==='India') return GOLD;
+      return (activeRegion==='All' || d.region===activeRegion) ? BASE : DIM;
+    });
+    totalChart.update();
+
+    pcChart.data.datasets[0].backgroundColor = byPC.map(d=>{
+      if(d.country==='India') return GOLD;
+      return (activeRegion==='All' || d.region===activeRegion) ? BASE : DIM;
+    });
+    pcChart.update();
+
+    scatterChart.data.datasets[1].backgroundColor = others.map(d=> (activeRegion==='All'||d.region===activeRegion)? BASE : DIM);
+    scatterChart.data.datasets[2].backgroundColor = (activeRegion==='All'||india.region===activeRegion) ? GOLD : GOLDDIM;
+    scatterChart.update();
+
+    renderPills();
+  });
+});
+</script>
+</body>
+</html>

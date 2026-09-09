@@ -1,29 +1,45 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import { ArrowUpRight, Download, FileText, FileImage, FileType2, Trash2, UploadCloud } from "lucide-react";
+import { ArrowUpRight, Download, FileCode2, FileText, FileImage, FileType2, Trash2, UploadCloud } from "lucide-react";
 import { SiteLayout, Section, Card } from "@/components/SiteLayout";
 
 
 const ASSIGNMENT_FILES = [
   {
+    title: "E-Waste Data Analysis Challenge",
+    description: "India e-waste analysis notebook and interactive dashboard.",
+    files: [
+      {
+        file: "global_ewaste_india_analysis_EWEM.ipynb",
+        path: "/assignments/global_ewaste_india_analysis_EWEM.ipynb",
+        label: "Jupyter Notebook",
+      },
+      {
+        file: "ewaste_dashboard.html",
+        path: "/assignments/ewaste_dashboard.html",
+        label: "Interactive Dashboard",
+      },
+    ],
+  },
+  {
     title: "Crossword",
-    file: "Crossword.pdf",
-    path: "/assignments/Crossword.pdf",
+    description: "PDF document ready to view and download.",
+    files: [{ file: "Crossword.pdf", path: "/assignments/Crossword.pdf", label: "PDF document" }],
   },
   {
     title: "Sustainability Pledge",
-    file: "Sustainability Pledge.pdf",
-    path: "/assignments/Sustainability%20Pledge.pdf",
+    description: "PDF document ready to view and download.",
+    files: [{ file: "Sustainability Pledge.pdf", path: "/assignments/Sustainability%20Pledge.pdf", label: "PDF document" }],
   },
   {
     title: "C Footprint Calculator",
-    file: "C-footprint_calculator.pdf",
-    path: "/assignments/C-footprint_calculator.pdf",
+    description: "PDF document ready to view and download.",
+    files: [{ file: "C-footprint_calculator.pdf", path: "/assignments/C-footprint_calculator.pdf", label: "PDF document" }],
   },
   {
     title: "Device anatomy",
-    file: "Device anatomy.pdf",
-    path: "/assignments/Device%20anatomy.pdf",
+    description: "PDF document ready to view and download.",
+    files: [{ file: "Device anatomy.pdf", path: "/assignments/Device%20anatomy.pdf", label: "PDF document" }],
   },
 ];
 
@@ -47,13 +63,13 @@ export const Route = createFileRoute("/assignments")({
 });
 
 const ACCEPT =
-  ".pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.gif,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*";
+  ".pdf,.doc,.docx,.ipynb,.html,.png,.jpg,.jpeg,.webp,.gif,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/x-ipynb+json,text/html,image/*";
 
 type Upload = {
   id: string;
   name: string;
   size: number;
-  kind: "pdf" | "doc" | "image" | "other";
+  kind: "pdf" | "doc" | "notebook" | "html" | "image" | "other";
   url?: string;
 };
 
@@ -61,6 +77,8 @@ function kindOf(file: File): Upload["kind"] {
   if (file.type.startsWith("image/")) return "image";
   if (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"))
     return "pdf";
+  if (file.name.toLowerCase().endsWith(".ipynb")) return "notebook";
+  if (file.type === "text/html" || file.name.toLowerCase().endsWith(".html")) return "html";
   if (/\.(docx?|odt)$/i.test(file.name) || file.type.includes("word")) return "doc";
   return "other";
 }
@@ -97,7 +115,7 @@ function AssignmentsPage() {
     }
     setError(
       rejected > 0
-        ? "Some files were skipped — only PDF, Word documents and images are accepted."
+        ? "Some files were skipped — only PDF, Word documents, notebooks, HTML files and images are accepted."
         : null,
     );
     if (next.length) setUploads((prev) => [...next, ...prev]);
@@ -116,8 +134,8 @@ function AssignmentsPage() {
       <div className="hero-bg">
         <Section eyebrow="⬆️ Upload" title="Add your assignment files">
         <p className="-mt-4 mb-6 text-sm text-muted-foreground">
-          Accepted formats: PDF, Word documents (.doc, .docx) and images (PNG,
-          JPG, WEBP, GIF). Files stay on this device in your current session.
+          Accepted formats: PDF, Word documents, Jupyter notebooks (.ipynb), HTML
+          files and images. Files stay on this device in your current session.
         </p>
 
         <div
@@ -179,6 +197,8 @@ function AssignmentsPage() {
                   <div className="grid h-40 w-full place-items-center rounded-2xl bg-secondary/60">
                     {u.kind === "pdf" ? (
                       <FileText className="size-10 text-primary" />
+                    ) : u.kind === "notebook" || u.kind === "html" ? (
+                      <FileCode2 className="size-10 text-primary" />
                     ) : (
                       <FileType2 className="size-10 text-primary" />
                     )}
@@ -233,33 +253,38 @@ function AssignmentsPage() {
 
           <div className="grid gap-4 sm:grid-cols-2">
             {ASSIGNMENT_FILES.map((assignment) => (
-              <Card key={assignment.file} className="flex h-full flex-col justify-between gap-6">
+              <Card key={assignment.title} className="flex h-full flex-col justify-between gap-6">
                 <div>
                   <div className="grid h-32 w-full place-items-center rounded-3xl bg-secondary/60">
                     <FileText className="size-10 text-primary" />
                   </div>
                   <p className="mt-5 text-lg font-semibold">{assignment.title}</p>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    PDF document ready to view and download.
-                  </p>
+                  <p className="mt-2 text-sm text-muted-foreground">{assignment.description}</p>
                 </div>
 
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <a
-                    href={assignment.path}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold text-primary transition hover:border-primary hover:text-primary-foreground"
-                  >
-                    <ArrowUpRight className="size-4" /> View PDF
-                  </a>
-                  <a
-                    href={assignment.path}
-                    download={assignment.file}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
-                  >
-                    <Download className="size-4" /> Download
-                  </a>
+                <div className="grid gap-3">
+                  {assignment.files.map((file) => (
+                    <div key={file.file} className="grid gap-2 sm:grid-cols-[1fr_auto_auto] sm:items-center">
+                      <span className="min-w-0 truncate text-sm font-medium" title={file.file}>
+                        {file.label}
+                      </span>
+                      <a
+                        href={file.path}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold text-primary transition hover:border-primary hover:text-primary-foreground"
+                      >
+                        <ArrowUpRight className="size-4" /> View
+                      </a>
+                      <a
+                        href={file.path}
+                        download={file.file}
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+                      >
+                        <Download className="size-4" /> Download
+                      </a>
+                    </div>
+                  ))}
                 </div>
               </Card>
             ))}
