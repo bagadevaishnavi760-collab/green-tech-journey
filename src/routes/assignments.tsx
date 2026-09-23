@@ -41,6 +41,39 @@ const ASSIGNMENT_FILES = [
     description: "PDF document ready to view and download.",
     files: [{ file: "Device anatomy.pdf", path: "/assignments/Device%20anatomy.pdf", label: "PDF document" }],
   },
+  {
+    title: "Clean Kerala Waste Model",
+    description: "PDF document ready to view and download.",
+    files: [
+      {
+        file: "Clean Kerala Waste Model_20260923_142018_0000.pdf",
+        path: "/assignments/clean-kerala-waste-model.pdf",
+        label: "PDF document",
+      },
+    ],
+  },
+  {
+    title: "Kerala Waste Company Report",
+    description: "PDF document ready to view and download.",
+    files: [
+      {
+        file: "Kerala Waste Company Report .pdf",
+        path: "/assignments/kerala-waste-company-report.pdf",
+        label: "PDF document",
+      },
+    ],
+  },
+  {
+    title: "Kerala Waste Reference Image",
+    description: "Image ready to view and download.",
+    files: [
+      {
+        file: "WhatsApp Image 2026-09-23 at 2.54.44 PM.jpeg",
+        path: "/assignments/kerala-waste-reference.jpeg",
+        label: "JPEG image",
+      },
+    ],
+  },
 ];
 
 export const Route = createFileRoute("/assignments")({
