@@ -74,6 +74,11 @@ const ASSIGNMENT_FILES = [
       },
     ],
   },
+  {
+    title: "Video Activity",
+    description: "Video activity assignment.",
+    files: [],
+  },
 ];
 
 export const Route = createFileRoute("/assignments")({
