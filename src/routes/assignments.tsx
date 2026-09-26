@@ -101,18 +101,19 @@ export const Route = createFileRoute("/assignments")({
 });
 
 const ACCEPT =
-  ".pdf,.doc,.docx,.ipynb,.html,.png,.jpg,.jpeg,.webp,.gif,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/x-ipynb+json,text/html,image/*";
+  ".pdf,.doc,.docx,.ipynb,.html,.png,.jpg,.jpeg,.webp,.gif,video/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/x-ipynb+json,text/html,image/*";
 
 type Upload = {
   id: string;
   name: string;
   size: number;
-  kind: "pdf" | "doc" | "notebook" | "html" | "image" | "other";
+  kind: "pdf" | "doc" | "notebook" | "html" | "image" | "video" | "other";
   url?: string;
 };
 
 function kindOf(file: File): Upload["kind"] {
   if (file.type.startsWith("image/")) return "image";
+  if (file.type.startsWith("video/")) return "video";
   if (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"))
     return "pdf";
   if (file.name.toLowerCase().endsWith(".ipynb")) return "notebook";
@@ -153,7 +154,7 @@ function AssignmentsPage() {
     }
     setError(
       rejected > 0
-        ? "Some files were skipped — only PDF, Word documents, notebooks, HTML files and images are accepted."
+        ? "Some files were skipped — only PDF, Word documents, notebooks, HTML files, images and videos are accepted."
         : null,
     );
     if (next.length) setUploads((prev) => [...next, ...prev]);
@@ -229,6 +230,12 @@ function AssignmentsPage() {
                   <img
                     src={u.url}
                     alt={u.name}
+                    className="h-40 w-full rounded-2xl border border-border/70 object-cover"
+                  />
+                ) : u.kind === "video" ? (
+                  <video
+                    src={u.url}
+                    controls
                     className="h-40 w-full rounded-2xl border border-border/70 object-cover"
                   />
                 ) : (
