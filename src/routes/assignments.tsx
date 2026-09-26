@@ -75,7 +75,7 @@ const ASSIGNMENT_FILES = [
     ],
   },
   {
-    title: "Quizz",
+    title: "Video Activity",
     description: "Screenshot from the completed video activity.",
     files: [
       {
