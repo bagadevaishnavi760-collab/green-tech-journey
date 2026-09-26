@@ -75,6 +75,17 @@ const ASSIGNMENT_FILES = [
     ],
   },
   {
+    title: "Quizz",
+    description: "Screenshot from the completed quiz activity.",
+    files: [
+      {
+        file: "quizz.png",
+        path: "/assignments/quizz.png",
+        label: "Quiz screenshot",
+      },
+    ],
+  },
+  {
     title: "Video Activity",
     description: "Screenshot from the completed video activity.",
     files: [
