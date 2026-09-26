@@ -76,8 +76,14 @@ const ASSIGNMENT_FILES = [
   },
   {
     title: "Video Activity",
-    description: "Video activity assignment.",
-    files: [],
+    description: "Screenshot from the completed video activity.",
+    files: [
+      {
+        file: "video-activity.png",
+        path: "/assignments/video-activity.png",
+        label: "Activity screenshot",
+      },
+    ],
   },
 ];
 
