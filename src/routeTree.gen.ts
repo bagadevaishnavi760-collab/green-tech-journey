@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AssignmentsRouteImport } from './routes/assignments'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as EcoGameRouteImport } from './routes/eco-game'
 import { Route as SubjectOverviewRouteImport } from './routes/subject-overview'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +36,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EcoGameRoute = EcoGameRouteImport.update({
+  id: '/eco-game',
+  path: '/eco-game',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubjectOverviewRoute = SubjectOverviewRouteImport.update({
   id: '/subject-overview',
   path: '/subject-overview',
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/assignments': typeof AssignmentsRoute
   '/contact': typeof ContactRoute
+  '/eco-game': typeof EcoGameRoute
   '/subject-overview': typeof SubjectOverviewRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/assignments': typeof AssignmentsRoute
   '/contact': typeof ContactRoute
+  '/eco-game': typeof EcoGameRoute
   '/subject-overview': typeof SubjectOverviewRoute
 }
 export interface FileRoutesById {
@@ -61,19 +69,33 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/assignments': typeof AssignmentsRoute
   '/contact': typeof ContactRoute
+  '/eco-game': typeof EcoGameRoute
   '/subject-overview': typeof SubjectOverviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/assignments' | '/contact' | '/subject-overview'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/assignments'
+    | '/contact'
+    | '/eco-game'
+    | '/subject-overview'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/assignments' | '/contact' | '/subject-overview'
+  to:
+    | '/'
+    | '/about'
+    | '/assignments'
+    | '/contact'
+    | '/eco-game'
+    | '/subject-overview'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/assignments'
     | '/contact'
+    | '/eco-game'
     | '/subject-overview'
   fileRoutesById: FileRoutesById
 }
@@ -82,6 +104,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AssignmentsRoute: typeof AssignmentsRoute
   ContactRoute: typeof ContactRoute
+  EcoGameRoute: typeof EcoGameRoute
   SubjectOverviewRoute: typeof SubjectOverviewRoute
 }
 
@@ -115,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/eco-game': {
+      id: '/eco-game'
+      path: '/eco-game'
+      fullPath: '/eco-game'
+      preLoaderRoute: typeof EcoGameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/subject-overview': {
       id: '/subject-overview'
       path: '/subject-overview'
@@ -130,6 +160,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AssignmentsRoute: AssignmentsRoute,
   ContactRoute: ContactRoute,
+  EcoGameRoute: EcoGameRoute,
   SubjectOverviewRoute: SubjectOverviewRoute,
 }
 export const routeTree = rootRouteImport

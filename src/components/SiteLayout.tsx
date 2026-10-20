@@ -9,6 +9,7 @@ import {
   BookOpen,
   FileText,
   Mail,
+  Gamepad2,
 } from "lucide-react";
 
 const NAV = [
@@ -16,6 +17,7 @@ const NAV = [
   { to: "/about", label: "About", icon: User },
   { to: "/subject-overview", label: "Subject Overview", icon: BookOpen },
   { to: "/assignments", label: "Assignments", icon: FileText },
+  { to: "/eco-game", label: "Eco Game", icon: Gamepad2 },
   { to: "/contact", label: "Contact", icon: Mail },
 ] as const;
 

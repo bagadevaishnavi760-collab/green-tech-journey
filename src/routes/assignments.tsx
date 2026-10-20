@@ -96,6 +96,18 @@ const ASSIGNMENT_FILES = [
       },
     ],
   },
+  {
+    title: "E-Waste Awareness Campaign · Environment Team Poster",
+    description:
+      "Television's eco lifecycle infographic poster created for the Environment Team awareness campaign.",
+    files: [
+      {
+        file: "Television's Eco Lifecycle Infographic.png",
+        path: "/assignments/television-eco-lifecycle-infographic.png",
+        label: "Campaign poster",
+      },
+    ],
+  },
 ];
 
 export const Route = createFileRoute("/assignments")({
@@ -317,9 +329,18 @@ function AssignmentsPage() {
             {ASSIGNMENT_FILES.map((assignment) => (
               <Card key={assignment.title} className="flex h-full flex-col justify-between gap-6">
                 <div>
-                  <div className="grid h-32 w-full place-items-center rounded-3xl bg-secondary/60">
-                    <FileText className="size-10 text-primary" />
-                  </div>
+                  {assignment.files[0]?.path.endsWith(".png") ||
+                  assignment.files[0]?.path.endsWith(".jpeg") ? (
+                    <img
+                      src={assignment.files[0].path}
+                      alt={`${assignment.title} preview`}
+                      className="h-32 w-full rounded-3xl border border-border/70 object-cover"
+                    />
+                  ) : (
+                    <div className="grid h-32 w-full place-items-center rounded-3xl bg-secondary/60">
+                      <FileText className="size-10 text-primary" />
+                    </div>
+                  )}
                   <p className="mt-5 text-lg font-semibold">{assignment.title}</p>
                   <p className="mt-2 text-sm text-muted-foreground">{assignment.description}</p>
                 </div>
